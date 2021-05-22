@@ -1,11 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './style.css';
 import mapImage from './img/map.svg';
 
 const JourneyPicker = () => {
   const [fromCity, setFromCity] = useState('');
-  const [toCity, setToCity] = useState('Mesto3');
+  const [toCity, setToCity] = useState('');
   const [date, setDate] = useState('');
+  const [cities, setCities] = useState([]);
+
+  useEffect(() => {
+    fetch('https://leviexpress-backend.herokuapp.com/api/cities')
+      .then((resp) => resp.json())
+      .then((json) => setCities(json.data));
+  }, []);
+
+  console.log(cities);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -26,6 +35,21 @@ const JourneyPicker = () => {
 
   console.log(fromCity, toCity, date);
 
+  const CityOptions = ({ cities }) => {
+    return (
+      <>
+        <option value="">Vyberte</option>
+        {cities.map((city) => {
+          return (
+            <option key={city.code} value={city.code}>
+              {city.name}
+            </option>
+          );
+        })}
+      </>
+    );
+  };
+
   return (
     <div className="journey-picker container">
       <h2 className="journey-picker__head">Kam chcete jet?</h2>
@@ -34,21 +58,13 @@ const JourneyPicker = () => {
           <label>
             <div className="journey-picker__label">Odkud:</div>
             <select onChange={handleFromCity} value={fromCity}>
-              <option value="">Vyberte</option>
-              <option value="Mesto1">Město 1</option>
-              <option value="Mesto2">Město 2</option>
-              <option value="Mesto3">Město 3</option>
-              <option value="Mesto4">Město 4</option>
+              <CityOptions cities={cities} />
             </select>
           </label>
           <label>
             <div className="journey-picker__label">Kam:</div>
             <select onChange={handleToCity} value={toCity}>
-              <option value="">Vyberte</option>
-              <option value="Mesto1">Město 1</option>
-              <option value="Mesto2">Město 2</option>
-              <option value="Mesto3">Město 3</option>
-              <option value="Mesto4">Město 4</option>
+              <CityOptions cities={cities} />
             </select>
           </label>
           <label>
