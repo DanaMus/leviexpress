@@ -2,12 +2,38 @@ import React, { useState, useEffect } from 'react';
 import './style.css';
 import mapImage from './img/map.svg';
 
-const JourneyPicker = () => {
+const CityOptions = ({ cities }) => {
+  return (
+    <>
+      <option value="">Vyberte</option>
+      {cities.map((city) => {
+        return (
+          <option key={city.code} value={city.code}>
+            {city.name}
+          </option>
+        );
+      })}
+    </>
+  );
+};
+
+const DatesOptions = ({ dates }) => {
+  return (
+    <>
+      <option value="">Vyberte</option>
+      {dates.map((date) => {
+        return <option key={date}>{date}</option>;
+      })}
+    </>
+  );
+};
+
+const JourneyPicker = ({ onJourneyChange }) => {
   const [fromCity, setFromCity] = useState('');
   const [toCity, setToCity] = useState('');
   const [date, setDate] = useState('');
   const [cities, setCities] = useState([]);
-  const [dates, setDates] = useState(['22. května 2021', '23. května 2021']);
+  const [dates, setDates] = useState([]);
 
   useEffect(() => {
     fetch('https://leviexpress-backend.herokuapp.com/api/cities')
@@ -20,7 +46,11 @@ const JourneyPicker = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log('Odesílám formulář s cestou');
+    fetch(
+      `https://leviexpress-backend.herokuapp.com/api/journey?fromCity=${fromCity}&toCity=${toCity}&date=${date}`,
+    )
+      .then((resp) => resp.json())
+      .then((json) => onJourneyChange(json.data));
   };
 
   const handleFromCity = (e) => {
@@ -33,34 +63,6 @@ const JourneyPicker = () => {
 
   const handleDate = (e) => {
     setDate(e.target.value);
-  };
-
-  console.log(fromCity, toCity, date);
-
-  const CityOptions = ({ cities }) => {
-    return (
-      <>
-        <option value="">Vyberte</option>
-        {cities.map((city) => {
-          return (
-            <option key={city.code} value={city.code}>
-              {city.name}
-            </option>
-          );
-        })}
-      </>
-    );
-  };
-
-  const DatesOptions = ({ dates }) => {
-    return (
-      <>
-        <option value="">Vyberte</option>
-        {dates.map((date) => {
-          return <option key={date}>{date}</option>;
-        })}
-      </>
-    );
   };
 
   return (
@@ -87,7 +89,11 @@ const JourneyPicker = () => {
             </select>
           </label>
           <div className="journey-picker__controls">
-            <button className="btn" type="submit">
+            <button
+              className="btn"
+              type="submit"
+              disabled={fromCity && toCity && date ? false : true}
+            >
               Vyhledat spoj
             </button>
           </div>
