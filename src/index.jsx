@@ -11,7 +11,7 @@ const App = () => (
   <Router>
     <Header />
     <div className="container">
-      <nav>
+      {/* <nav>
         <ul>
           <li>
             <Link to="/">Domů</Link>
@@ -20,7 +20,7 @@ const App = () => (
             <Link to="/reservation">Rezervace</Link>
           </li>
         </ul>
-      </nav>
+      </nav> */}
       <Switch>
         <Route path="/reservation">
           <Reservation />

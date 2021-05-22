@@ -1,7 +1,8 @@
 import React from 'react';
+import JourneyPicker from '../components/JourneyPicker';
 
 const Home = () => {
-  return <h2>Tohle je Home stránka</h2>;
+  return <JourneyPicker />;
 };
 
 export default Home;
