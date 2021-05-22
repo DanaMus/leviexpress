@@ -1,16 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './style.css';
 import mapImage from './img/map.svg';
 
 const JourneyPicker = () => {
+  const [fromCity, setFromCity] = useState('');
+  const [toCity, setToCity] = useState('Mesto3');
+  const [date, setDate] = useState('');
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log('Odesílám formulář s cestou');
+  };
+
+  const handleFromCity = (e) => {
+    setFromCity(e.target.value);
+  };
+
+  const handleToCity = (e) => {
+    setToCity(e.target.value);
+  };
+
+  const handleDate = (e) => {
+    setDate(e.target.value);
+  };
+
+  console.log(fromCity, toCity, date);
+
   return (
     <div className="journey-picker container">
       <h2 className="journey-picker__head">Kam chcete jet?</h2>
       <div className="journey-picker__body">
-        <form className="journey-picker__form">
+        <form className="journey-picker__form" onSubmit={handleSubmit}>
           <label>
             <div className="journey-picker__label">Odkud:</div>
-            <select>
+            <select onChange={handleFromCity} value={fromCity}>
               <option value="">Vyberte</option>
               <option value="Mesto1">Město 1</option>
               <option value="Mesto2">Město 2</option>
@@ -20,7 +43,7 @@ const JourneyPicker = () => {
           </label>
           <label>
             <div className="journey-picker__label">Kam:</div>
-            <select>
+            <select onChange={handleToCity} value={toCity}>
               <option value="">Vyberte</option>
               <option value="Mesto1">Město 1</option>
               <option value="Mesto2">Město 2</option>
@@ -30,7 +53,7 @@ const JourneyPicker = () => {
           </label>
           <label>
             <div className="journey-picker__label">Datum:</div>
-            <select>
+            <select onChange={handleDate} value={date}>
               <option value="">Vyberte</option>
               <option>20.05.2021</option>
               <option>21.05.2021</option>
