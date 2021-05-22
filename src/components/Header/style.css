@@ -1,16 +1,4 @@
 header {
-  padding-left: 2rem;
-  padding-right: 2rem;
-}
-
-@media only screen and (min-width: 768px) {
-  header {
-    padding-left: 0;
-    padding-right: 0;
-  }
-}
-
-header {
   padding-top: 1px;
   height: 305px;
   color: white;
